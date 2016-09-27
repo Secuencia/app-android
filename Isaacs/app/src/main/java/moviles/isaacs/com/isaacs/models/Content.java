@@ -16,6 +16,4 @@ public class Content {
 
     public ArrayList<Story> stories;
 
-    
-
 }
