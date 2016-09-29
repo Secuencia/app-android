@@ -16,11 +16,18 @@ public class Content extends SugarRecord {
 
     public String type;
 
-    public ArrayList<Story> stories;
+    public ArrayList<Story> stories; // Correct way to manage collections with SugarORM?
 
     // Empty constructor for the ORM
     public Content(){
 
+    }
+
+    public Content(String data, String type) {
+        this.data = data;
+        this.type = type;
+        this.date_created = null; //Have to obtain current date
+        this.stories = new ArrayList<>();
     }
 
 }
