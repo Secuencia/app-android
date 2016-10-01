@@ -1,6 +1,6 @@
 package moviles.isaacs.com.isaacs.models;
 
-import com.orm.SugarRecord;
+
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by Nicolas on 9/27/16.
  */
 
-public class Content extends SugarRecord {
+public class Content {
 
     public String data;
 
