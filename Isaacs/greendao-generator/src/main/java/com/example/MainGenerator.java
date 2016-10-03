@@ -7,6 +7,7 @@ import de.greenrobot.daogenerator.Schema;
 
 public class MainGenerator {
 
+    // Comment to try git
     private static final String PROJECT_DIR = System.getProperty("user.dir");
 
     public static void main(String[] args) {
