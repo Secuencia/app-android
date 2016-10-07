@@ -10,15 +10,17 @@ import java.util.ArrayList;
 
 public class Content {
 
-    public String data;
+    private int _id;
 
-    public String date_created;
+    private String data;
 
-    public String type;
+    private String date_created;
 
-    public ArrayList<Story> stories; // Correct way to manage collections with SugarORM?
+    private String type;
 
-    // Empty constructor for the ORM
+    private ArrayList<Story> stories; // Correct way to manage collections with SugarORM?
+
+    // Empty constructor
     public Content(){
 
     }
@@ -30,4 +32,43 @@ public class Content {
         this.stories = new ArrayList<>();
     }
 
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getDate_created() {
+        return date_created;
+    }
+
+    public void setDate_created(String date_created) {
+        this.date_created = date_created;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public ArrayList<Story> getStories() {
+        return stories;
+    }
+
+    public void setStories(ArrayList<Story> stories) {
+        this.stories = stories;
+    }
 }

@@ -10,15 +10,17 @@ import java.util.ArrayList;
 
 public class Story{
 
-    public String brief;
+    private int _id;
 
-    public String date_created;
+    private String brief;
 
-    public String last_modified;
+    private String date_created;
 
-    public String title;
+    private String last_modified;
 
-    public ArrayList<Content> contents; // Correct way to manage collections with SugarORM?
+    private String title;
+
+    private ArrayList<Content> contents; // Correct way to manage collections with SugarORM?
 
     // Empty constructor for the ORM
     public Story(){
