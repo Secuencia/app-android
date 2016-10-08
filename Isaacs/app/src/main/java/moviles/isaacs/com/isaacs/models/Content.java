@@ -14,7 +14,7 @@ public class Content {
 
     private String data;
 
-    private String date_created;
+    private String dateCreated;
 
     private String type;
 
@@ -28,7 +28,7 @@ public class Content {
     public Content(String data, String type) {
         this.data = data;
         this.type = type;
-        this.date_created = null; //Have to obtain current date
+        this.dateCreated = null; //Have to obtain current date
         this.stories = new ArrayList<>();
     }
 
@@ -49,11 +49,11 @@ public class Content {
     }
 
     public String getDate_created() {
-        return date_created;
+        return dateCreated;
     }
 
-    public void setDate_created(String date_created) {
-        this.date_created = date_created;
+    public void setDateCreated(String date_created) {
+        this.dateCreated = date_created;
     }
 
     public String getType() {

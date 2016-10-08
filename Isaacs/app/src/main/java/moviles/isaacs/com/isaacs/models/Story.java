@@ -14,9 +14,9 @@ public class Story{
 
     private String brief;
 
-    private String date_created;
+    private String dateCreated;
 
-    private String last_modified;
+    private String lastModified;
 
     private String title;
 
@@ -30,10 +30,56 @@ public class Story{
     public Story(String brief, String title){
         this.brief = brief;
         this.title = title;
-        date_created = null; //Have to obtain current date
-        last_modified = null; //Have to obtain current date
+        dateCreated = null; //Have to obtain current date
+        lastModified = null; //Have to obtain current date
         this.contents = new ArrayList<>();
     }
 
+    public int get_id() {
+        return _id;
+    }
 
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public ArrayList<Content> getContents() {
+        return contents;
+    }
+
+    public void setContents(ArrayList<Content> contents) {
+        this.contents = contents;
+    }
 }

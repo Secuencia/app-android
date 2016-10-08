@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteCursor;
 import android.content.Context;
 import android.content.ContentValues;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyDBHandler extends SQLiteOpenHelper{
@@ -90,8 +91,15 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public Story createStory() {
-        return null;
+    public void createStory(Story story) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_S_TITLE, story.getTitle());
+        values.put(COLUMN_S_BRIEF, story.getBrief());
+        values.put(COLUMN_S_DATECREATED, story.getDateCreated());
+        values.put(COLUMN_S_LASTMODIFIED, story.getLastModified());
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABLE_STORIES, null, values);
+        db.close();
     }
 
 
@@ -105,27 +113,101 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
 
+        Content content = new Content();
+
         while(!c.isAfterLast()) {
             if(c.getString(c.getColumnIndex(COLUMN_C_DATA)) != null) {
-                // Extract values and create content
+                content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
+                content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setDateCreated(c.getString(c.getColumnIndex(COLUMN_C_DATECREATED)));
+                content.setData(c.getString(c.getColumnIndex(COLUMN_C_DATA))); // Here is necessary to parse JSON first
+                content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setStories(null); // Retrieve content's stories
             }
         }
 
         db.close();
 
-        return null;
+        return content;
     }
 
     public List<Content> getContents() {
-        return null;
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_CONTENTS;
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+
+        List<Content> contents = new ArrayList<>();
+
+        while(!c.isAfterLast()) {
+            if(c.getString(c.getColumnIndex(COLUMN_C_DATA)) != null) {
+                Content content = new Content();
+                content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
+                content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setDateCreated(c.getString(c.getColumnIndex(COLUMN_C_DATECREATED)));
+                content.setData(c.getString(c.getColumnIndex(COLUMN_C_DATA))); // Here is necessary to parse JSON first
+                content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setStories(null); // Retrieve content's stories
+                contents.add(content);
+            }
+        }
+
+        db.close();
+
+        return contents;
     }
 
-    public List<Content> getStory(int idStory) {
-        return null;
+    public Story getStory(int idStory) {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_STORIES + " WHERE " + COLUMN_S_ID + " = \"" + idStory + "\"";
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+
+        Story story = new Story();
+
+        while(!c.isAfterLast()) {
+            if(c.getString(c.getColumnIndex(COLUMN_S_TITLE)) != null) {
+                story.set_id(c.getInt(c.getColumnIndex(COLUMN_S_ID)));
+                story.setBrief(c.getString(c.getColumnIndex(COLUMN_S_BRIEF)));
+                story.setTitle(c.getString(c.getColumnIndex(COLUMN_S_TITLE)));
+                story.setDateCreated(c.getString(c.getColumnIndex(COLUMN_S_DATECREATED)));
+                story.setLastModified(c.getString(c.getColumnIndex(COLUMN_S_LASTMODIFIED)));
+                story.setContents(null);
+            }
+        }
+
+        db.close();
+
+        return story;
     }
 
     public List<Story> getStories(){
-        return null;
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_STORIES;
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+
+        List<Story> stories = new ArrayList<Story>();
+
+        while(!c.isAfterLast()) {
+            if(c.getString(c.getColumnIndex(COLUMN_S_TITLE)) != null) {
+                Story story = new Story();
+                story.set_id(c.getInt(c.getColumnIndex(COLUMN_S_ID)));
+                story.setBrief(c.getString(c.getColumnIndex(COLUMN_S_BRIEF)));
+                story.setTitle(c.getString(c.getColumnIndex(COLUMN_S_TITLE)));
+                story.setDateCreated(c.getString(c.getColumnIndex(COLUMN_S_DATECREATED)));
+                story.setLastModified(c.getString(c.getColumnIndex(COLUMN_S_LASTMODIFIED)));
+                story.setContents(null);
+                stories.add(story);
+            }
+        }
+
+        db.close();
+
+        return stories;
     }
 
 
