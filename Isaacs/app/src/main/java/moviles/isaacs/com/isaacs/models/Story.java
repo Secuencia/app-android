@@ -3,6 +3,8 @@ package moviles.isaacs.com.isaacs.models;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Nicolas on 9/27/16.
@@ -12,26 +14,27 @@ public class Story{
 
     private int _id;
 
+    private String title;
+
     private String brief;
 
-    private String dateCreated;
+    private Date datecreated;
 
-    private String lastModified;
-
-    private String title;
+    private Date lastupdated;
 
     private ArrayList<Content> contents; // Correct way to manage collections with SugarORM?
 
     // Empty constructor for the ORM
     public Story(){
-
+        datecreated = Calendar.getInstance().getTime(); //Have to obtain current date
+        lastupdated = Calendar.getInstance().getTime();
     }
 
     public Story(String brief, String title){
         this.brief = brief;
         this.title = title;
-        dateCreated = null; //Have to obtain current date
-        lastModified = null; //Have to obtain current date
+        datecreated = Calendar.getInstance().getTime(); //Have to obtain current date
+        lastupdated = Calendar.getInstance().getTime(); //Have to obtain current date
         this.contents = new ArrayList<>();
     }
 
@@ -43,6 +46,10 @@ public class Story{
         this._id = _id;
     }
 
+    public String getTitle() { return title; }
+
+    public void setTitle(String title) { this.title = title; }
+
     public String getBrief() {
         return brief;
     }
@@ -51,28 +58,20 @@ public class Story{
         this.brief = brief;
     }
 
-    public String getDateCreated() {
-        return dateCreated;
+    public Date getDateCreated() {
+        return datecreated;
     }
 
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDateCreated(Date datecreated) {
+        this.datecreated = datecreated;
     }
 
-    public String getLastModified() {
-        return lastModified;
+    public Date getLastUpdated() {
+        return lastupdated;
     }
 
-    public void setLastModified(String lastModified) {
-        this.lastModified = lastModified;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLastUpdated(Date lastupdated) {
+        this.lastupdated = lastupdated;
     }
 
     public ArrayList<Content> getContents() {

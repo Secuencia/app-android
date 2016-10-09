@@ -3,6 +3,8 @@ package moviles.isaacs.com.isaacs.models;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Nicolas on 9/27/16.
@@ -10,13 +12,25 @@ import java.util.ArrayList;
 
 public class Content {
 
+    // Constants
+
+    public static final int TEXT = 0;
+
+    public static final int PICTURE = 1;
+
+    public static final int AUDIO = 2;
+
+    // Variables
+
     private int _id;
 
     private String data;
 
-    private String dateCreated;
+    private Date dateCreated;
 
-    private String type;
+    private Date lastUpdated;
+
+    private int type;
 
     private ArrayList<Story> stories; // Correct way to manage collections with SugarORM?
 
@@ -25,10 +39,11 @@ public class Content {
 
     }
 
-    public Content(String data, String type) {
+    public Content(String data, int type) {
         this.data = data;
         this.type = type;
-        this.dateCreated = null; //Have to obtain current date
+        this.dateCreated = Calendar.getInstance().getTime();
+        this.lastUpdated = Calendar.getInstance().getTime();
         this.stories = new ArrayList<>();
     }
 
@@ -48,19 +63,25 @@ public class Content {
         this.data = data;
     }
 
-    public String getDate_created() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(String date_created) {
-        this.dateCreated = date_created;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    public String getType() {
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) { this.lastUpdated = lastUpdated; }
+
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

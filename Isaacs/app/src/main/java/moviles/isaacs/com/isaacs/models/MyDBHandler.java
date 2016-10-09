@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.ContentValues;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MyDBHandler extends SQLiteOpenHelper{
@@ -19,6 +20,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_C_ID = "_id";
     public static final String COLUMN_C_DATA = "data";
     public static final String COLUMN_C_DATECREATED = "datecreated";
+    public static final String COLUMN_C_LASTUPDATED = "lastupdated";
     public static final String COLUMN_C_TYPE = "type";
 
     public static final String TABLE_STORIES = "stories";
@@ -26,7 +28,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_S_TITLE = "title";
     public static final String COLUMN_S_BRIEF = "brief";
     public static final String COLUMN_S_DATECREATED = "datecreated";
-    public static final String COLUMN_S_LASTMODIFIED = "lastmodified";
+    public static final String COLUMN_S_LASTUPDATED = "lastupdated";
 
     public static final String TABLE_JOIN_CONTENTS_STORIES = "join_contents_stories";
     public static final String COLUMN_JCS_ID = "_id";
@@ -40,9 +42,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
     // What to do when creating the database for the FIRST time
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         String queryContents = "CREATE TABLE " + TABLE_CONTENTS + "(" +
                 COLUMN_C_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
+                COLUMN_C_TYPE + " INTEGER " +
                 COLUMN_C_DATA + " TEXT " +
+                COLUMN_C_DATECREATED + " INTEGER " +
+                COLUMN_C_LASTUPDATED + " INTEGER " +
                 ");";
         db.execSQL(queryContents);
 
@@ -50,8 +56,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_S_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
                 COLUMN_S_TITLE + " TEXT " +
                 COLUMN_S_BRIEF + " TEXT " +
-                COLUMN_S_DATECREATED + " TEXT " +
-                COLUMN_S_LASTMODIFIED + " TEXT " +
+                COLUMN_S_DATECREATED + " INTEGER " +
+                COLUMN_S_LASTUPDATED + " INTEGER " +
                 ");";
         db.execSQL(queryStories);
 
@@ -83,9 +89,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
     // Add new content
     public void createContent(Content content) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_C_DATA, content.getData());
-        values.put(COLUMN_C_DATECREATED, content.getDate_created());
+
         values.put(COLUMN_C_TYPE, content.getType());
+        values.put(COLUMN_C_DATA, content.getData());
+        values.put(COLUMN_C_DATECREATED, convertDateToLong(content.getDateCreated()));
+        values.put(COLUMN_C_LASTUPDATED, convertDateToLong(content.getLastUpdated()));
+
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_CONTENTS, null, values);
         db.close();
@@ -93,10 +102,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public void createStory(Story story) {
         ContentValues values = new ContentValues();
+
         values.put(COLUMN_S_TITLE, story.getTitle());
         values.put(COLUMN_S_BRIEF, story.getBrief());
-        values.put(COLUMN_S_DATECREATED, story.getDateCreated());
-        values.put(COLUMN_S_LASTMODIFIED, story.getLastModified());
+        values.put(COLUMN_S_DATECREATED, convertDateToLong(story.getDateCreated()));
+        values.put(COLUMN_S_LASTUPDATED, convertDateToLong(story.getLastUpdated()));
+
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_STORIES, null, values);
         db.close();
@@ -117,12 +128,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         while(!c.isAfterLast()) {
             if(c.getString(c.getColumnIndex(COLUMN_C_DATA)) != null) {
-                content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
+                /*content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
                 content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
                 content.setDateCreated(c.getString(c.getColumnIndex(COLUMN_C_DATECREATED)));
                 content.setData(c.getString(c.getColumnIndex(COLUMN_C_DATA))); // Here is necessary to parse JSON first
                 content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
-                content.setStories(null); // Retrieve content's stories
+                content.setStories(null); // Retrieve content's stories*/
             }
         }
 
@@ -142,14 +153,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         while(!c.isAfterLast()) {
             if(c.getString(c.getColumnIndex(COLUMN_C_DATA)) != null) {
-                Content content = new Content();
+                /*Content content = new Content();
                 content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
                 content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
                 content.setDateCreated(c.getString(c.getColumnIndex(COLUMN_C_DATECREATED)));
                 content.setData(c.getString(c.getColumnIndex(COLUMN_C_DATA))); // Here is necessary to parse JSON first
                 content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
                 content.setStories(null); // Retrieve content's stories
-                contents.add(content);
+                contents.add(content);*/
             }
         }
 
@@ -169,12 +180,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         while(!c.isAfterLast()) {
             if(c.getString(c.getColumnIndex(COLUMN_S_TITLE)) != null) {
-                story.set_id(c.getInt(c.getColumnIndex(COLUMN_S_ID)));
+                /*story.set_id(c.getInt(c.getColumnIndex(COLUMN_S_ID)));
                 story.setBrief(c.getString(c.getColumnIndex(COLUMN_S_BRIEF)));
                 story.setTitle(c.getString(c.getColumnIndex(COLUMN_S_TITLE)));
                 story.setDateCreated(c.getString(c.getColumnIndex(COLUMN_S_DATECREATED)));
                 story.setLastModified(c.getString(c.getColumnIndex(COLUMN_S_LASTMODIFIED)));
-                story.setContents(null);
+                story.setContents(null);*/
             }
         }
 
@@ -194,14 +205,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         while(!c.isAfterLast()) {
             if(c.getString(c.getColumnIndex(COLUMN_S_TITLE)) != null) {
-                Story story = new Story();
+                /*Story story = new Story();
                 story.set_id(c.getInt(c.getColumnIndex(COLUMN_S_ID)));
                 story.setBrief(c.getString(c.getColumnIndex(COLUMN_S_BRIEF)));
                 story.setTitle(c.getString(c.getColumnIndex(COLUMN_S_TITLE)));
                 story.setDateCreated(c.getString(c.getColumnIndex(COLUMN_S_DATECREATED)));
                 story.setLastModified(c.getString(c.getColumnIndex(COLUMN_S_LASTMODIFIED)));
                 story.setContents(null);
-                stories.add(story);
+                stories.add(story);*/
             }
         }
 
@@ -240,5 +251,15 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     // Remove new relationship content-story
 
+
+    // Utils
+
+    public long convertDateToLong(Date date) {
+        return date.getTime();
+    }
+
+    public Date convertLongToDate(Long numberDate) {
+        return new Date(numberDate);
+    }
 
 }
