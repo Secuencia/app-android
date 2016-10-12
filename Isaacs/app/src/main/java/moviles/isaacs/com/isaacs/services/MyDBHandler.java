@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs.models;
+package moviles.isaacs.com.isaacs.services;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +10,9 @@ import android.content.ContentValues;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import moviles.isaacs.com.isaacs.models.Content;
+import moviles.isaacs.com.isaacs.models.Story;
 
 public class MyDBHandler extends SQLiteOpenHelper{
 
@@ -44,27 +47,28 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
 
         String queryContents = "CREATE TABLE " + TABLE_CONTENTS + "(" +
-                COLUMN_C_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
-                COLUMN_C_TYPE + " INTEGER " +
-                COLUMN_C_DATA + " TEXT " +
-                COLUMN_C_DATECREATED + " INTEGER " +
+                COLUMN_C_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                COLUMN_C_TYPE + " INTEGER ," +
+                COLUMN_C_DATA + " TEXT ," +
+                COLUMN_C_DATECREATED + " INTEGER ," +
                 COLUMN_C_LASTUPDATED + " INTEGER " +
                 ");";
         db.execSQL(queryContents);
 
         String queryStories = "CREATE TABLE " + TABLE_STORIES + "(" +
-                COLUMN_S_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
-                COLUMN_S_TITLE + " TEXT " +
-                COLUMN_S_BRIEF + " TEXT " +
-                COLUMN_S_DATECREATED + " INTEGER " +
+                COLUMN_S_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                COLUMN_S_TITLE + " TEXT ," +
+                COLUMN_S_BRIEF + " TEXT ," +
+                COLUMN_S_DATECREATED + " INTEGER ," +
                 COLUMN_S_LASTUPDATED + " INTEGER " +
                 ");";
         db.execSQL(queryStories);
 
         String queryJoinTable = "CREATE TABLE " + TABLE_CONTENTS + "(" +
                 COLUMN_JCS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
-                COLUMN_JCS_IDCONTENT + " INTEGER " +
-                COLUMN_JCS_IDSTORY + " INTEGER " +
+                COLUMN_JCS_IDCONTENT + " INTEGER ," +
+                COLUMN_JCS_IDSTORY + " INTEGER ," +
+                "UNIQUE ("+COLUMN_JCS_IDCONTENT+","+COLUMN_JCS_IDSTORY+") ON CONFLICT REPLACE" +
                 ");";
         db.execSQL(queryJoinTable);
     }
@@ -87,7 +91,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     // C: Create
 
     // Add new content
-    public void createContent(Content content) {
+    public boolean createContent(Content content) {
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_C_TYPE, content.getType());
@@ -96,11 +100,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_C_LASTUPDATED, convertDateToLong(content.getLastUpdated()));
 
         SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_CONTENTS, null, values);
+        long result = db.insert(TABLE_CONTENTS, null, values);
         db.close();
+
+        return result >= 0;
     }
 
-    public void createStory(Story story) {
+    public boolean createStory(Story story) {
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_S_TITLE, story.getTitle());
@@ -109,15 +115,17 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_S_LASTUPDATED, convertDateToLong(story.getLastUpdated()));
 
         SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_STORIES, null, values);
+        long result = db.insert(TABLE_STORIES, null, values);
         db.close();
+
+        return result >= 0;
     }
 
 
 
     // R: Retrieve
 
-    public Content getContentById(int idContent) {
+    public Content getContent(int idContent) {
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_CONTENTS + " WHERE " + COLUMN_C_ID + " = \"" + idContent + "\"";
 
@@ -225,31 +233,80 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     // U: Update
 
-    public Content updateContent(Content modifiedContent) {
-        return null;
+    public boolean updateContent(Content modifiedContent) {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_C_TYPE, modifiedContent.getType());
+        values.put(COLUMN_C_DATA, modifiedContent.getData());
+        values.put(COLUMN_C_DATECREATED, convertDateToLong(modifiedContent.getDateCreated()));
+        values.put(COLUMN_C_LASTUPDATED, convertDateToLong(modifiedContent.getLastUpdated()));
+
+        SQLiteDatabase db = getWritableDatabase();
+        int result = db.update(TABLE_CONTENTS, values, COLUMN_C_ID + "=" + modifiedContent.get_id(), null);
+        db.close();
+
+        return result > 0;
     }
 
-    public Story updateStory(Story modifiedStory) {
-        return null;
+    public boolean updateStory(Story modifiedStory) {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_S_TITLE, modifiedStory.getTitle());
+        values.put(COLUMN_S_BRIEF, modifiedStory.getBrief());
+        values.put(COLUMN_S_DATECREATED, convertDateToLong(modifiedStory.getDateCreated()));
+        values.put(COLUMN_S_LASTUPDATED, convertDateToLong(modifiedStory.getLastUpdated()));
+
+        SQLiteDatabase db = getWritableDatabase();
+        int result = db.update(TABLE_STORIES, values, COLUMN_S_ID + "=" + modifiedStory.get_id(), null);
+        db.close();
+
+        return result > 0;
     }
 
 
 
     // D: Delete
 
-    public void deleteContentById(int idContent) {
+    public boolean deleteContentById(Content content) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_CONTENTS + " WHERE " + COLUMN_C_ID + " =\"" + idContent + "\"");
+        int result = db.delete(TABLE_CONTENTS, COLUMN_C_ID + "=" + content.get_id(), null);
         db.close();
+
+        return result > 0;
     }
 
-    public Story removeStory(Story story) {
-        return null;
+    public boolean removeStory(Story story) {
+        SQLiteDatabase db = getWritableDatabase();
+        int result = db.delete(TABLE_STORIES, COLUMN_S_ID + "=" + story.get_id(), null);
+        db.close();
+        
+        return result > 0;
     }
 
     // Add new relationship content-story
 
+    public boolean addContentToStory(Content content, Story story) {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_JCS_IDCONTENT, content.get_id());
+        values.put(COLUMN_JCS_IDSTORY, story.get_id());
+
+        SQLiteDatabase db = getWritableDatabase();
+        long result = db.insert(TABLE_JOIN_CONTENTS_STORIES, null, values);
+        db.close();
+
+        return result >= 0;
+    }
+
     // Remove new relationship content-story
+
+    public boolean removeContentFromStory(Content content, Story story) {
+        SQLiteDatabase db = getWritableDatabase();
+        int result = db.delete(TABLE_JOIN_CONTENTS_STORIES, COLUMN_JCS_IDCONTENT + " = " + content.get_id() + " AND " + COLUMN_JCS_IDSTORY + " = " + story.get_id(), null);
+        db.close();
+
+        return result > 0;
+    }
 
 
     // Utils
