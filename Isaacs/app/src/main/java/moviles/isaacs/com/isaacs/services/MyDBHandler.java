@@ -187,7 +187,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public ArrayList<Content> getContents(Story story) {
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_CONTENTS + "WHERE "; // MAKE JOIN
+        String query = "SELECT * FROM " + TABLE_CONTENTS + " INNER JOIN " + TABLE_JOIN_CONTENTS_STORIES + " ON " +
+                COLUMN_C_ID + " = " + COLUMN_JCS_IDCONTENT + " WHERE " + COLUMN_JCS_IDSTORY + " = " + story.get_id();
 
         Cursor c = db.rawQuery(query, null);
 
