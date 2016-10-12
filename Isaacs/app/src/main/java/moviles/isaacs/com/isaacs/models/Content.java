@@ -24,13 +24,17 @@ public class Content {
 
     private int _id;
 
+    private int type;
+
     private String data;
 
     private Date dateCreated;
 
     private Date lastUpdated;
 
-    private int type;
+    private Double lat;
+
+    private Double lon;
 
     private ArrayList<Story> stories; // Correct way to manage collections with SugarORM?
 
@@ -91,5 +95,21 @@ public class Content {
 
     public void setStories(ArrayList<Story> stories) {
         this.stories = stories;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLon() {
+        return lon;
+    }
+
+    public void setLon(Double lon) {
+        this.lon = lon;
     }
 }

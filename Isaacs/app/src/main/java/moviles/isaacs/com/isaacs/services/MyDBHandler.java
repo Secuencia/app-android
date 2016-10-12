@@ -25,6 +25,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_C_DATECREATED = "datecreated";
     public static final String COLUMN_C_LASTUPDATED = "lastupdated";
     public static final String COLUMN_C_TYPE = "type";
+    public static final String COLUMN_C_LAT = "latitude";
+    public static final String COLUMN_C_LON = "longitude";
 
     public static final String TABLE_STORIES = "stories";
     public static final String COLUMN_S_ID = "_id";
@@ -51,7 +53,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_C_TYPE + " INTEGER ," +
                 COLUMN_C_DATA + " TEXT ," +
                 COLUMN_C_DATECREATED + " INTEGER ," +
-                COLUMN_C_LASTUPDATED + " INTEGER " +
+                COLUMN_C_LASTUPDATED + " INTEGER ," +
+                COLUMN_C_LAT + " DOUBLE ," +
+                COLUMN_C_LON + " DOUBLE " +
                 ");";
         db.execSQL(queryContents);
 
@@ -82,8 +86,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-
-
      /*
     CRUD: Create; Retrieve; Update; Delete
      */
@@ -98,6 +100,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_C_DATA, content.getData());
         values.put(COLUMN_C_DATECREATED, convertDateToLong(content.getDateCreated()));
         values.put(COLUMN_C_LASTUPDATED, convertDateToLong(content.getLastUpdated()));
+        values.put(COLUMN_C_LAT, content.getLat());
+        values.put(COLUMN_C_LAT, content.getLon());
 
         SQLiteDatabase db = getWritableDatabase();
         long result = db.insert(TABLE_CONTENTS, null, values);
@@ -240,6 +244,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_C_DATA, modifiedContent.getData());
         values.put(COLUMN_C_DATECREATED, convertDateToLong(modifiedContent.getDateCreated()));
         values.put(COLUMN_C_LASTUPDATED, convertDateToLong(modifiedContent.getLastUpdated()));
+        values.put(COLUMN_C_LAT, modifiedContent.getLat());
+        values.put(COLUMN_C_LAT, modifiedContent.getLon());
 
         SQLiteDatabase db = getWritableDatabase();
         int result = db.update(TABLE_CONTENTS, values, COLUMN_C_ID + "=" + modifiedContent.get_id(), null);
@@ -279,7 +285,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = getWritableDatabase();
         int result = db.delete(TABLE_STORIES, COLUMN_S_ID + "=" + story.get_id(), null);
         db.close();
-        
+
         return result > 0;
     }
 
