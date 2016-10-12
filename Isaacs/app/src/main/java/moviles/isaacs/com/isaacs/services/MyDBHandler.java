@@ -131,22 +131,24 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public Content getContent(int idContent) {
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_CONTENTS + " WHERE " + COLUMN_C_ID + " = \"" + idContent + "\"";
+        String query = "SELECT * FROM " + TABLE_CONTENTS + " WHERE " + COLUMN_C_ID + " = \"" + idContent + "\""; // Improve with query method
 
         Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
 
         Content content = new Content();
 
-        while(!c.isAfterLast()) {
-            if(c.getString(c.getColumnIndex(COLUMN_C_DATA)) != null) {
-                /*content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
-                content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
-                content.setDateCreated(c.getString(c.getColumnIndex(COLUMN_C_DATECREATED)));
+        if (c.getCount() > 0){
+            c.moveToFirst();
+            do {
+                content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
+                content.setType(c.getInt(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setDateCreated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_C_DATECREATED))));
+                content.setLastUpdated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_C_LASTUPDATED))));
                 content.setData(c.getString(c.getColumnIndex(COLUMN_C_DATA))); // Here is necessary to parse JSON first
-                content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
-                content.setStories(null); // Retrieve content's stories*/
-            }
+                content.setLat(c.getDouble(c.getColumnIndex(COLUMN_C_LAT)));
+                content.setLon(c.getDouble(c.getColumnIndex(COLUMN_C_LON)));
+                content.setStories(null); // Retrieve content's stories
+            } while(c.moveToNext());
         }
 
         db.close();
@@ -154,26 +156,57 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return content;
     }
 
-    public List<Content> getContents() {
+    public ArrayList<Content> getContents() {
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_CONTENTS;
 
         Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
 
-        List<Content> contents = new ArrayList<>();
+        ArrayList<Content> contents = new ArrayList<>();
 
-        while(!c.isAfterLast()) {
-            if(c.getString(c.getColumnIndex(COLUMN_C_DATA)) != null) {
-                /*Content content = new Content();
+        if (c.getCount() > 0){
+            c.moveToFirst();
+            do {
+                Content content = new Content();
                 content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
-                content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
-                content.setDateCreated(c.getString(c.getColumnIndex(COLUMN_C_DATECREATED)));
+                content.setType(c.getInt(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setDateCreated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_C_DATECREATED))));
+                content.setLastUpdated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_C_LASTUPDATED))));
                 content.setData(c.getString(c.getColumnIndex(COLUMN_C_DATA))); // Here is necessary to parse JSON first
-                content.setType(c.getString(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setLat(c.getDouble(c.getColumnIndex(COLUMN_C_LAT)));
+                content.setLon(c.getDouble(c.getColumnIndex(COLUMN_C_LON)));
                 content.setStories(null); // Retrieve content's stories
-                contents.add(content);*/
-            }
+                contents.add(content);
+            } while(c.moveToNext());
+        }
+
+        db.close();
+
+        return contents;
+    }
+
+    public ArrayList<Content> getContents(Story story) {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_CONTENTS + "WHERE "; // MAKE JOIN
+
+        Cursor c = db.rawQuery(query, null);
+
+        ArrayList<Content> contents = new ArrayList<>();
+
+        if (c.getCount() > 0){
+            c.moveToFirst();
+            do {
+                Content content = new Content();
+                content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
+                content.setType(c.getInt(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setDateCreated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_C_DATECREATED))));
+                content.setLastUpdated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_C_LASTUPDATED))));
+                content.setData(c.getString(c.getColumnIndex(COLUMN_C_DATA))); // Here is necessary to parse JSON first
+                content.setLat(c.getDouble(c.getColumnIndex(COLUMN_C_LAT)));
+                content.setLon(c.getDouble(c.getColumnIndex(COLUMN_C_LON)));
+                content.setStories(null); // Retrieve content's stories
+                contents.add(content);
+            } while(c.moveToNext());
         }
 
         db.close();
@@ -186,19 +219,19 @@ public class MyDBHandler extends SQLiteOpenHelper{
         String query = "SELECT * FROM " + TABLE_STORIES + " WHERE " + COLUMN_S_ID + " = \"" + idStory + "\"";
 
         Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
 
         Story story = new Story();
 
-        while(!c.isAfterLast()) {
-            if(c.getString(c.getColumnIndex(COLUMN_S_TITLE)) != null) {
-                /*story.set_id(c.getInt(c.getColumnIndex(COLUMN_S_ID)));
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            do {
+                story.set_id(c.getInt(c.getColumnIndex(COLUMN_S_ID)));
                 story.setBrief(c.getString(c.getColumnIndex(COLUMN_S_BRIEF)));
                 story.setTitle(c.getString(c.getColumnIndex(COLUMN_S_TITLE)));
-                story.setDateCreated(c.getString(c.getColumnIndex(COLUMN_S_DATECREATED)));
-                story.setLastModified(c.getString(c.getColumnIndex(COLUMN_S_LASTMODIFIED)));
-                story.setContents(null);*/
-            }
+                story.setDateCreated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_S_DATECREATED))));
+                story.setLastUpdated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_S_LASTUPDATED))));
+                story.setContents(getContents(story));
+            } while (c.moveToNext());
         }
 
         db.close();
@@ -206,26 +239,26 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return story;
     }
 
-    public List<Story> getStories(){
+    public ArrayList<Story> getStories(){
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_STORIES;
 
         Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
 
-        List<Story> stories = new ArrayList<Story>();
+        ArrayList<Story> stories = new ArrayList<Story>();
 
-        while(!c.isAfterLast()) {
-            if(c.getString(c.getColumnIndex(COLUMN_S_TITLE)) != null) {
-                /*Story story = new Story();
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            do {
+                Story story = new Story();
                 story.set_id(c.getInt(c.getColumnIndex(COLUMN_S_ID)));
                 story.setBrief(c.getString(c.getColumnIndex(COLUMN_S_BRIEF)));
                 story.setTitle(c.getString(c.getColumnIndex(COLUMN_S_TITLE)));
-                story.setDateCreated(c.getString(c.getColumnIndex(COLUMN_S_DATECREATED)));
-                story.setLastModified(c.getString(c.getColumnIndex(COLUMN_S_LASTMODIFIED)));
-                story.setContents(null);
-                stories.add(story);*/
-            }
+                story.setDateCreated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_S_DATECREATED))));
+                story.setLastUpdated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_S_LASTUPDATED))));
+                story.setContents(getContents(story));
+                stories.add(story);
+            } while (c.moveToNext());
         }
 
         db.close();
