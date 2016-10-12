@@ -48,7 +48,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String queryContents = "CREATE TABLE " + TABLE_CONTENTS + "(" +
+        String queryContents = "CREATE TABLE IF NOT EXISTS " + TABLE_CONTENTS + " (" +
                 COLUMN_C_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 COLUMN_C_TYPE + " INTEGER ," +
                 COLUMN_C_DATA + " TEXT ," +
@@ -59,7 +59,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 ");";
         db.execSQL(queryContents);
 
-        String queryStories = "CREATE TABLE " + TABLE_STORIES + "(" +
+        String queryStories = "CREATE TABLE IF NOT EXISTS " + TABLE_STORIES + "(" +
                 COLUMN_S_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 COLUMN_S_TITLE + " TEXT ," +
                 COLUMN_S_BRIEF + " TEXT ," +
@@ -68,7 +68,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 ");";
         db.execSQL(queryStories);
 
-        String queryJoinTable = "CREATE TABLE " + TABLE_CONTENTS + "(" +
+        String queryJoinTable = "CREATE TABLE IF NOT EXISTS " + TABLE_CONTENTS + "(" +
                 COLUMN_JCS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
                 COLUMN_JCS_IDCONTENT + " INTEGER ," +
                 COLUMN_JCS_IDSTORY + " INTEGER ," +

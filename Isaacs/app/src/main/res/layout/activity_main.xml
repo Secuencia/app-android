@@ -22,14 +22,13 @@
         android:id="@+id/editText" />
 
     <Button
-        android:text="Add Content"
+        android:text="Add Story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="25dp"
-        android:id="@+id/content_button"
-        android:onClick="addContent" />
+        android:id="@+id/content_button" />
 
     <TextView
         android:text="TextView"
