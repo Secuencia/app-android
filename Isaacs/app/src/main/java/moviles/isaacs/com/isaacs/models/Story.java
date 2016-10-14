@@ -81,4 +81,9 @@ public class Story{
     public void setContents(ArrayList<Content> contents) {
         this.contents = contents;
     }
+
+    @Override
+    public String toString() {
+        return "Title: " + this.title + ", Brief: " + this.brief;
+    }
 }

@@ -20,7 +20,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "isaacs.db";
 
     public static final String TABLE_CONTENTS = "contents";
-    public static final String COLUMN_C_ID = "_id";
+    public static final String COLUMN_C_ID = "idcontent";
     public static final String COLUMN_C_DATA = "data";
     public static final String COLUMN_C_DATECREATED = "datecreated";
     public static final String COLUMN_C_LASTUPDATED = "lastupdated";
@@ -36,9 +36,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_S_LASTUPDATED = "lastupdated";
 
     public static final String TABLE_JOIN_CONTENTS_STORIES = "join_contents_stories";
-    public static final String COLUMN_JCS_ID = "_id";
-    public static final String COLUMN_JCS_IDCONTENT = "idcontent";
-    public static final String COLUMN_JCS_IDSTORY = "idstory";
+    public static final String COLUMN_JCS_ID = "id";
+    public static final String COLUMN_JCS_IDCONTENT = "idcontentjoin";
+    public static final String COLUMN_JCS_IDSTORY = "idstoryjoin";
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -68,8 +68,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 ");";
         db.execSQL(queryStories);
 
-        String queryJoinTable = "CREATE TABLE IF NOT EXISTS " + TABLE_CONTENTS + "(" +
-                COLUMN_JCS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
+        String queryJoinTable = "CREATE TABLE IF NOT EXISTS " + TABLE_JOIN_CONTENTS_STORIES + "(" +
+                COLUMN_JCS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 COLUMN_JCS_IDCONTENT + " INTEGER ," +
                 COLUMN_JCS_IDSTORY + " INTEGER ," +
                 "UNIQUE ("+COLUMN_JCS_IDCONTENT+","+COLUMN_JCS_IDSTORY+") ON CONFLICT REPLACE" +
@@ -212,7 +212,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         db.close();
 
-        return contents;
+        return contents.size() == 0 ? null : contents;
     }
 
     public Story getStory(int idStory) {

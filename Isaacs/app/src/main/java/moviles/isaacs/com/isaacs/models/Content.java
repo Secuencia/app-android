@@ -112,4 +112,9 @@ public class Content {
     public void setLon(Double lon) {
         this.lon = lon;
     }
+
+    @Override
+    public String toString() {
+        return "Date created: " + this.dateCreated + ", type: " + this.type;
+    }
 }
