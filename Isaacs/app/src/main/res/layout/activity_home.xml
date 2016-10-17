@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="moviles.isaacs.com.isaacs.HomeActivity">
+
+    <Button
+        android:text="Pruebas generales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/contents_button"
+        android:layout_marginBottom="76dp"
+        android:id="@+id/test_activity_button"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:onClick="goToDBTesting" />
+
+    <Button
+        android:text="Stories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stories_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="goToStories" />
+
+    <Button
+        android:text="Contents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contents_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:onClick="goToContents" />
+
+    <Button
+        android:text="Radar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radar_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/test_activity_button"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="28dp"
+        android:id="@+id/text_input_button"
+        android:onClick="goToInput"
+        android:layout_alignEnd="@+id/contents_button" />
+
+    <Button
+        android:text="Photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text_input_button"
+        android:layout_alignStart="@+id/radar_button"
+        android:id="@+id/photo_input_button"
+        android:layout_alignEnd="@+id/radar_button"
+        android:onClick="goToInput" />
+
+    <Button
+        android:text="Audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/photo_input_button"
+        android:layout_alignStart="@+id/stories_button"
+        android:id="@+id/audio_input_button"
+        android:onClick="goToInput" />
+
+    <TextView
+        android:text="Isaacs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:id="@+id/textView4"
+        android:typeface="normal"
+        android:textSize="36sp"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/black" />
+
+</RelativeLayout>
