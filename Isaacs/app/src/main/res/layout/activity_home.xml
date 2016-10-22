@@ -11,17 +11,6 @@
     tools:context="moviles.isaacs.com.isaacs.HomeActivity">
 
     <Button
-        android:text="Pruebas generales"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/contents_button"
-        android:layout_marginBottom="76dp"
-        android:id="@+id/test_activity_button"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:onClick="goToDBTesting" />
-
-    <Button
         android:text="Stories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,47 +36,77 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:text="Text"
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:background="@drawable/rectangle"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/test_activity_button"
+        android:minHeight="40dp"
+        android:maxHeight="40dp"
+        android:padding="10dp"
+        android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="28dp"
-        android:id="@+id/text_input_button"
-        android:onClick="goToInput"
-        android:layout_alignEnd="@+id/contents_button" />
+        android:id="@+id/text_input_field"
+        android:cursorVisible="false"
+        android:onClick="goToInput"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:gravity="center_vertical"
+        android:minHeight="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/text_input_field"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:text="Audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/photo_input_button"
+            android:layout_alignStart="@+id/stories_button"
+            android:id="@+id/audio_input_button"
+            android:onClick="goToInput"
+            android:layout_weight="50" />
+
+        <Button
+            android:text="Photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/photo_input_button"
+            android:onClick="goToInput"
+            android:layout_marginStart="21dp"
+            android:layout_weight="50"
+            android:layout_below="@+id/textView4"
+            android:layout_alignParentStart="true" />
+
+    </LinearLayout>
 
     <Button
-        android:text="Photo"
+        android:text="Pruebas generales"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/text_input_button"
-        android:layout_alignStart="@+id/radar_button"
-        android:id="@+id/photo_input_button"
-        android:layout_alignEnd="@+id/radar_button"
-        android:onClick="goToInput" />
-
-    <Button
-        android:text="Audio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/photo_input_button"
-        android:layout_alignStart="@+id/stories_button"
-        android:id="@+id/audio_input_button"
-        android:onClick="goToInput" />
+        android:id="@+id/test_activity_button"
+        android:onClick="goToDBTesting"
+        android:layout_above="@+id/stories_button"
+        android:layout_toStartOf="@+id/stories_button"
+        android:layout_marginBottom="27dp" />
 
     <TextView
         android:text="Isaacs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
         android:id="@+id/textView4"
         android:typeface="normal"
-        android:textSize="36sp"
+        android:textSize="80sp"
         android:textStyle="normal|bold"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:layout_marginBottom="70dp"
+        android:layout_above="@+id/text_input_field"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
