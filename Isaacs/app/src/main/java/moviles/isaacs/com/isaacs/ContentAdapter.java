@@ -1,11 +1,13 @@
 package moviles.isaacs.com.isaacs;
 
 import android.content.Context;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,9 +15,11 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import moviles.isaacs.com.isaacs.models.Content;
+import moviles.isaacs.com.isaacs.services.AudioManager;
 
 /**
  * Created by sfrsebastian on 10/21/16.
@@ -79,6 +83,35 @@ public class ContentAdapter extends BaseAdapter {
                     bodyEditText.setFocusable(false);
                     bodyEditText.setClickable(false);
                 }
+            }
+            else if(content.getType() == Content.AUDIO){
+                rowView = mInflater.inflate(R.layout.cell_audio, parent, false);
+                final Button btnRecord = (Button)rowView.findViewById(R.id.record_button);
+                final String audioPath = contentData.getString("audio");
+                btnRecord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("Test", "Record Now");
+                        if(!AudioManager.getInstance().isRecording()){
+                            AudioManager.getInstance().startRecording(audioPath);
+                            btnRecord.setText("Recording");
+                        }
+                        else{
+                            AudioManager.getInstance().stopRecording();
+                            btnRecord.setText("Record");
+                        }
+                    }
+                });
+                Button btnPlay = (Button) rowView.findViewById(R.id.play_button);
+                btnPlay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("Test", "Play Now");
+                        AudioManager.getInstance().startPlaying(audioPath);
+                    }
+                });
+                TextView dateTextView = (TextView) rowView.findViewById(R.id.date_text);
+                dateTextView.setText(content.getDateCreated().toString());
             }
             return rowView;
         }

@@ -1,8 +1,6 @@
 package moviles.isaacs.com.isaacs;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,15 +16,14 @@ import android.widget.ListView;
 
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import moviles.isaacs.com.isaacs.models.Content;
+import moviles.isaacs.com.isaacs.services.AudioManager;
 import moviles.isaacs.com.isaacs.services.MyDBHandler;
 
 public class InputActivity extends AppCompatActivity {
@@ -68,6 +65,12 @@ public class InputActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        persistCurrentContent();
+    }
+
     public void insertText(View view){
         persistCurrentContent();
         currentContent = new Content();
@@ -94,7 +97,17 @@ public class InputActivity extends AppCompatActivity {
         persistCurrentContent();
         currentContent = new Content();
         currentContent.setType(Content.AUDIO);
-        currentContent.setData("Creado Audio");
+        try{
+            JSONObject json = new JSONObject(currentContent.getData());
+            json.put("audio", AudioManager.getInstance().getFilePath(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".3gp"));
+            currentContent.setData(json.toString());
+        }
+        catch(Exception e){
+            Log.e("Exception", "Error en json de audio");
+        }
+
+        listItems.add(currentContent);
+        adapter.notifyDataSetChanged();
     }
 
     private void dispatchTakePictureIntent() {
@@ -131,10 +144,10 @@ public class InputActivity extends AppCompatActivity {
                     JSONObject json = new JSONObject(currentContent.getData());
                     json.put("body", body.getText());
                     currentContent.setData(json.toString());
-                    handler.createContent(currentContent);
                     listItems.set(adapter.getCount()-1, currentContent);
                     adapter.notifyDataSetChanged();
                 }
+                handler.createContent(currentContent);
             }
             catch(Exception e){
                 Log.e("Exception", "Error de json");
