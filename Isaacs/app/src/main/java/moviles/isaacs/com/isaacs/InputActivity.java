@@ -11,6 +11,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ListView;
 
 import java.io.ByteArrayOutputStream;
@@ -42,6 +43,8 @@ public class InputActivity extends AppCompatActivity {
             inputType = extras.getString("INPUT_TYPE");
         }
         listView = (ListView) findViewById(R.id.list_view);
+        listView.setItemsCanFocus(true);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         listItems = new ArrayList();
         adapter = new ContentAdapter(this, listItems);
         listView.setAdapter(adapter);

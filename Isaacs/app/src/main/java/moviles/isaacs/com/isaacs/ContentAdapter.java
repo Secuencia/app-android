@@ -9,10 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,8 +64,10 @@ public class ContentAdapter extends BaseAdapter {
         Content content = (Content) getItem(position);
         if(content.getType() == Content.PICTURE){
             rowView = mInflater.inflate(R.layout.cell_photo, parent, false);
-            ImageView image = (ImageView) rowView.findViewById(R.id.content_thumbnail);
-            Picasso.with(mContext).load(content.getData()).resize(130,130).placeholder(R.mipmap.ic_launcher).into(image);
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.content_thumbnail);
+            TextView dateTextView = (TextView) rowView.findViewById(R.id.date_text);
+            dateTextView.setText(content.getDateCreated().toString());
+            Picasso.with(mContext).load(content.getData()).resize(130,130).placeholder(R.mipmap.ic_launcher).into(imageView);
         }
         else if(content.getType() == Content.TEXT){
             TextView titleTextView = (TextView) rowView.findViewById(R.id.content_title);
