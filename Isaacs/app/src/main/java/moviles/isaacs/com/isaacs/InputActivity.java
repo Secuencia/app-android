@@ -11,6 +11,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
 
@@ -27,6 +28,7 @@ import moviles.isaacs.com.isaacs.models.Content;
 public class InputActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int PICK_IMAGE_REQUEST = 2 ;
     private String inputType;
     private ListView listView;
     private ArrayList<Content> listItems;
@@ -36,6 +38,10 @@ public class InputActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         setContentView(R.layout.activity_input);
         setTheme(R.style.AppTheme);
         Bundle extras = getIntent().getExtras();
@@ -67,9 +73,7 @@ public class InputActivity extends AppCompatActivity {
     public void insertFromGallery(View view){
         currentContent = new Content();
         currentContent.setType(Content.PICTURE);
-        currentContent.setData("Creada Galeria");
-        listItems.add(currentContent);
-        adapter.notifyDataSetChanged();
+        dispatchPickPicture();
     }
 
     public void insertPhoto(View view){
@@ -105,14 +109,25 @@ public class InputActivity extends AppCompatActivity {
         }
     }
 
+    private void dispatchPickPicture(){
+        Intent pickIntent = new Intent();
+        pickIntent.setType("image/*");
+        pickIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(pickIntent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Uri imageBitmap = Uri.fromFile(pictureFile);
             currentContent.setData(imageBitmap.toString());
-            listItems.add(currentContent);
-            adapter.notifyDataSetChanged();
         }
+        else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            currentContent.setData(uri.toString());
+        }
+        listItems.add(currentContent);
+        adapter.notifyDataSetChanged();
     }
 
     private File createImageFile() throws IOException {
