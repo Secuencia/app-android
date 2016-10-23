@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ListView;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import moviles.isaacs.com.isaacs.models.Content;
+import moviles.isaacs.com.isaacs.services.MyDBHandler;
 
 public class InputActivity extends AppCompatActivity {
 
@@ -35,15 +39,17 @@ public class InputActivity extends AppCompatActivity {
     private ContentAdapter adapter;
     private Content currentContent;
     private File pictureFile;
+    private MyDBHandler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler = new MyDBHandler(this, null, null, 1);
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         setContentView(R.layout.activity_input);
-        setTheme(R.style.AppTheme);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             inputType = extras.getString("INPUT_TYPE");
@@ -63,31 +69,32 @@ public class InputActivity extends AppCompatActivity {
     }
 
     public void insertText(View view){
+        persistCurrentContent();
         currentContent = new Content();
         currentContent.setType(Content.TEXT);
-        currentContent.setData("Creado texto");
         listItems.add(currentContent);
         adapter.notifyDataSetChanged();
     }
 
     public void insertFromGallery(View view){
+        persistCurrentContent();
         currentContent = new Content();
         currentContent.setType(Content.PICTURE);
         dispatchPickPicture();
     }
 
     public void insertPhoto(View view){
+        persistCurrentContent();
         currentContent = new Content();
         currentContent.setType(Content.PICTURE);
         dispatchTakePictureIntent();
     }
 
     public void insertAudio(View view){
+        persistCurrentContent();
         currentContent = new Content();
         currentContent.setType(Content.AUDIO);
         currentContent.setData("Creado Audio");
-        listItems.add(currentContent);
-        adapter.notifyDataSetChanged();
     }
 
     private void dispatchTakePictureIntent() {
@@ -97,7 +104,7 @@ public class InputActivity extends AppCompatActivity {
             try {
                 pictureFile = createImageFile();
             } catch (IOException ex) {
-                Log.e("Excepcion","Error creando file de imagen");
+                Log.e("Exception","Error creando file de imagen");
             }
             if (pictureFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
@@ -116,18 +123,50 @@ public class InputActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(pickIntent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
     }
 
+    private void persistCurrentContent() {
+        if(currentContent != null){
+            try{
+                if(currentContent.getType() == Content.PICTURE || currentContent.getType() == Content.TEXT){
+                    EditText body = (EditText) listView.getChildAt(adapter.getCount()-1).findViewById(R.id.body_editText);
+                    JSONObject json = new JSONObject(currentContent.getData());
+                    json.put("body", body.getText());
+                    currentContent.setData(json.toString());
+                    handler.createContent(currentContent);
+                    listItems.set(adapter.getCount()-1, currentContent);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+            catch(Exception e){
+                Log.e("Exception", "Error de json");
+            }
+        }
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Uri imageBitmap = Uri.fromFile(pictureFile);
-            currentContent.setData(imageBitmap.toString());
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if ((requestCode == REQUEST_IMAGE_CAPTURE || requestCode == PICK_IMAGE_REQUEST) && resultCode == RESULT_OK) {
+            Uri image_uri = null;
+            JSONObject json = new JSONObject();
+            if(requestCode == REQUEST_IMAGE_CAPTURE){
+                image_uri = Uri.fromFile(pictureFile);
+            }
+            else if(requestCode == PICK_IMAGE_REQUEST){
+                image_uri = data.getData();
+            }
+            if(image_uri != null){
+                try{
+                    json.put("picture", image_uri.toString());
+                }
+                catch(Exception e){
+                    Log.e("Exception", "Json Exception");
+                }
+                currentContent.setData(json.toString());
+            }
         }
-        else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-            currentContent.setData(uri.toString());
+        if(resultCode == RESULT_OK){
+            listItems.add(currentContent);
+            adapter.notifyDataSetChanged();
         }
-        listItems.add(currentContent);
-        adapter.notifyDataSetChanged();
     }
 
     private File createImageFile() throws IOException {

@@ -11,63 +11,79 @@
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp">
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_view"
-        android:layout_alignParentTop="true"
-        android:divider="@null"
-        android:dividerHeight="5sp"/>
+        android:weightSum="100">
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/multiple_actions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        fab:fab_addButtonColorNormal="@color/colorPrimary"
-        fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
-        fab:fab_addButtonPlusIconColor="@color/white"
-        fab:fab_labelStyle="@style/menu_labels_style"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/list_view"
+            android:layout_alignParentTop="true"
+            android:divider="@null"
+            android:dividerHeight="5sp"
+            android:layout_weight="90" />
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/text_insert"
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/multiple_actions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_title="Texto"
-            fab:fab_colorPressed="@color/colorPrimaryDark"
-            android:onClick="insertText"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            fab:fab_addButtonColorNormal="@color/colorPrimary"
+            fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
+            fab:fab_addButtonPlusIconColor="@color/white"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            fab:fab_expandDirection="left"
+            android:layout_weight="10"
+            android:layout_gravity="bottom|right">
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/gallery_insert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_title="Galeria"
-            fab:fab_colorPressed="@color/colorPrimaryDark"
-            android:onClick="insertFromGallery"/>
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/text_insert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_title="Texto"
+                fab:fab_colorPressed="@color/colorPrimaryDark"
+                fab:fab_size="mini"
+                android:onClick="insertText"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/photo_insert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_title="Foto"
-            fab:fab_colorPressed="@color/colorPrimaryDark"
-            android:onClick="insertPhoto"/>
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/gallery_insert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_title="Galeria"
+                fab:fab_colorPressed="@color/colorPrimaryDark"
+                fab:fab_size="mini"
+                android:onClick="insertFromGallery"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/audio_insert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_title="Audio"
-            fab:fab_colorPressed="@color/colorPrimaryDark"
-            android:onClick="insertAudio"/>
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/photo_insert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_title="Foto"
+                fab:fab_colorPressed="@color/colorPrimaryDark"
+                fab:fab_size="mini"
+                android:onClick="insertPhoto"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/audio_insert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_title="Audio"
+                fab:fab_colorPressed="@color/colorPrimaryDark"
+                fab:fab_size="mini"
+                android:onClick="insertAudio"/>
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    </LinearLayout>
+
 </RelativeLayout>

@@ -43,6 +43,7 @@ public class Content {
         this.dateCreated = Calendar.getInstance().getTime();
         this.lastUpdated = Calendar.getInstance().getTime();
         this.stories = new ArrayList<>();
+        this.data = "{}";
     }
 
     public Content(String data, int type) {

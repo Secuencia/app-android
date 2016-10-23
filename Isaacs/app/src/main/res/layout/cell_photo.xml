@@ -17,7 +17,7 @@
         android:layout_weight="97.44"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_margin="4dp" />
+        android:layout_marginRight="5dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -38,12 +38,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
-            android:id="@+id/editText"
-            android:background="@android:color/transparent"
+            android:id="@+id/body_editText"
             android:textSize="20sp"
             android:layout_weight="20"
             android:gravity="top|left"
-            tools:inputType="textImeMultiLine" />
+            tools:inputType="textImeMultiLine"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
 </LinearLayout>

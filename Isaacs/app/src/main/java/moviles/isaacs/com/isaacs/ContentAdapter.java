@@ -1,9 +1,6 @@
 package moviles.isaacs.com.isaacs;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
+import org.json.JSONObject;
 import java.util.ArrayList;
 
 import moviles.isaacs.com.isaacs.models.Content;
@@ -58,26 +53,37 @@ public class ContentAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get view for row item
-
         View rowView = mInflater.inflate(R.layout.cell_text, parent, false);
-
-        Content content = (Content) getItem(position);
-        if(content.getType() == Content.PICTURE){
-            rowView = mInflater.inflate(R.layout.cell_photo, parent, false);
-            ImageView imageView = (ImageView) rowView.findViewById(R.id.content_thumbnail);
-            TextView dateTextView = (TextView) rowView.findViewById(R.id.date_text);
-            dateTextView.setText(content.getDateCreated().toString());
-            Picasso.with(mContext).load(content.getData()).resize(130,130).placeholder(R.mipmap.ic_launcher).into(imageView);
+        try{
+            Content content = (Content) getItem(position);
+            JSONObject contentData = new JSONObject(content.getData());
+            if(content.getType() == Content.PICTURE){
+                rowView = mInflater.inflate(R.layout.cell_photo, parent, false);
+                ImageView imageView = (ImageView) rowView.findViewById(R.id.content_thumbnail);
+                TextView dateTextView = (TextView) rowView.findViewById(R.id.date_text);
+                EditText bodyEditText = (EditText) rowView.findViewById(R.id.body_editText);
+                Picasso.with(mContext).load(contentData.getString("picture")).resize(130,130).placeholder(R.mipmap.ic_launcher).into(imageView);
+                dateTextView.setText(content.getDateCreated().toString());
+                String contentBody = contentData.getString("body");
+                bodyEditText.setText(contentBody);
+                if(position < getCount()){
+                    bodyEditText.setFocusable(false);
+                    bodyEditText.setClickable(false);
+                }
+            }
+            else if(content.getType() == Content.TEXT){
+                EditText bodyEditText = (EditText) rowView.findViewById(R.id.body_editText);
+                String contentBody = contentData.getString("body");
+                bodyEditText.setText(contentBody);
+                if(position < getCount()){
+                    bodyEditText.setFocusable(false);
+                    bodyEditText.setClickable(false);
+                }
+            }
+            return rowView;
         }
-        else if(content.getType() == Content.TEXT){
-            TextView titleTextView = (TextView) rowView.findViewById(R.id.content_title);
-            TextView subtitleTextView = (TextView) rowView.findViewById(R.id.content_subtitle);
-            TextView detailTextView = (TextView) rowView.findViewById(R.id.content_detail);
-            ImageView thumbnailImageView = (ImageView) rowView.findViewById(R.id.content_thumbnail);
-            titleTextView.setText("Titulo " + content.getData());
-            subtitleTextView.setText("Subtitulo " + content.getData());
-            detailTextView.setText("Texto " + content.getData());
-            Picasso.with(mContext).load(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher).into(thumbnailImageView);
+        catch(Exception e){
+            Log.e("Exception", "Exception de view");
         }
         return rowView;
     }
