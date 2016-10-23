@@ -39,6 +39,9 @@ public class HomeActivity extends AppCompatActivity {
     public void goToInput(View view) {
         Intent goToInputActivity = new Intent(getApplicationContext(), InputActivity.class);
         switch (view.getId()) {
+            case R.id.text_input_field:
+                goToInputActivity.putExtra("INPUT_TYPE", "text");
+                break;
             case R.id.photo_input_button:
                 goToInputActivity.putExtra("INPUT_TYPE", "photo");
                 break;

@@ -49,7 +49,10 @@
         android:layout_alignParentStart="true"
         android:id="@+id/text_input_field"
         android:cursorVisible="false"
-        android:onClick="goToInput"/>
+        android:onClick="goToInput"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:hint="Escribe algo..." />
 
     <LinearLayout
         android:orientation="horizontal"
