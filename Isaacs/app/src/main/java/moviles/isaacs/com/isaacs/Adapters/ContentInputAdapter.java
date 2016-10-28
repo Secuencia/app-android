@@ -1,7 +1,6 @@
-package moviles.isaacs.com.isaacs;
+package moviles.isaacs.com.isaacs.Adapters;
 
 import android.content.Context;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import moviles.isaacs.com.isaacs.R;
 import moviles.isaacs.com.isaacs.models.Content;
 import moviles.isaacs.com.isaacs.services.AudioManager;
 
@@ -25,12 +25,12 @@ import moviles.isaacs.com.isaacs.services.AudioManager;
  * Created by sfrsebastian on 10/21/16.
  */
 
-public class ContentAdapter extends BaseAdapter {
+public class ContentInputAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<Content> mDataSource;
 
-    public ContentAdapter(Context context, ArrayList<Content> items) {
+    public ContentInputAdapter(Context context, ArrayList<Content> items) {
         mContext = context;
         mDataSource = items;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,12 +57,12 @@ public class ContentAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get view for row item
-        View rowView = mInflater.inflate(R.layout.cell_text, parent, false);
+        View rowView = mInflater.inflate(R.layout.cell_input_text, parent, false);
         try{
             Content content = (Content) getItem(position);
             JSONObject contentData = new JSONObject(content.getData());
             if(content.getType() == Content.PICTURE){
-                rowView = mInflater.inflate(R.layout.cell_photo, parent, false);
+                rowView = mInflater.inflate(R.layout.cell_input_photo, parent, false);
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.content_thumbnail);
                 TextView dateTextView = (TextView) rowView.findViewById(R.id.date_text);
                 EditText bodyEditText = (EditText) rowView.findViewById(R.id.body_editText);
@@ -85,7 +85,7 @@ public class ContentAdapter extends BaseAdapter {
                 }
             }
             else if(content.getType() == Content.AUDIO){
-                rowView = mInflater.inflate(R.layout.cell_audio, parent, false);
+                rowView = mInflater.inflate(R.layout.cell_input_audio, parent, false);
                 final Button btnRecord = (Button)rowView.findViewById(R.id.record_button);
                 final String audioPath = contentData.getString("audio");
                 btnRecord.setOnClickListener(new View.OnClickListener() {

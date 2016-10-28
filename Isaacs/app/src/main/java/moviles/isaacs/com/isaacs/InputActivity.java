@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import moviles.isaacs.com.isaacs.Adapters.ContentInputAdapter;
 import moviles.isaacs.com.isaacs.models.Content;
 import moviles.isaacs.com.isaacs.services.AudioManager;
 import moviles.isaacs.com.isaacs.services.MyDBHandler;
@@ -33,7 +34,7 @@ public class InputActivity extends AppCompatActivity {
     private String inputType;
     private ListView listView;
     private ArrayList<Content> listItems;
-    private ContentAdapter adapter;
+    private ContentInputAdapter adapter;
     private Content currentContent;
     private File pictureFile;
     private MyDBHandler handler;
@@ -55,7 +56,7 @@ public class InputActivity extends AppCompatActivity {
         listView.setItemsCanFocus(true);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         listItems = new ArrayList();
-        adapter = new ContentAdapter(this, listItems);
+        adapter = new ContentInputAdapter(this, listItems);
         listView.setAdapter(adapter);
         switch(inputType){
             case("text"): insertText(null); break;
@@ -160,25 +161,23 @@ public class InputActivity extends AppCompatActivity {
         if ((requestCode == REQUEST_IMAGE_CAPTURE || requestCode == PICK_IMAGE_REQUEST) && resultCode == RESULT_OK) {
             Uri image_uri = null;
             JSONObject json = new JSONObject();
-            if(requestCode == REQUEST_IMAGE_CAPTURE){
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 image_uri = Uri.fromFile(pictureFile);
-            }
-            else if(requestCode == PICK_IMAGE_REQUEST){
+            } else if (requestCode == PICK_IMAGE_REQUEST) {
                 image_uri = data.getData();
             }
-            if(image_uri != null){
-                try{
+            if (image_uri != null) {
+                try {
                     json.put("picture", image_uri.toString());
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     Log.e("Exception", "Json Exception");
                 }
                 currentContent.setData(json.toString());
             }
-        }
-        if(resultCode == RESULT_OK){
-            listItems.add(currentContent);
-            adapter.notifyDataSetChanged();
+            if(resultCode == RESULT_OK){
+                listItems.add(currentContent);
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 
