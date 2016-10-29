@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import moviles.isaacs.com.isaacs.R;
+import moviles.isaacs.com.isaacs.models.Content;
 import moviles.isaacs.com.isaacs.models.Story;
 import moviles.isaacs.com.isaacs.services.MyDBHandler;
 
@@ -106,6 +108,11 @@ public class StoriesActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-
-
+    public void deleteStory(View view){
+        Button button = (Button)view.findViewById(R.id.delete);
+        Story story = (Story)button.getTag(R.string.story);
+        handler.removeStory(story);
+        stories.remove(story);
+        adapter.notifyDataSetChanged();
+    }
 }

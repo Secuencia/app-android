@@ -62,7 +62,9 @@ public class StoryDetailAdapter extends BaseAdapter {
         TextView title = (TextView) view.findViewById(R.id.title);
         title.setText(story.getTitle());
         CheckBox check = (CheckBox) view.findViewById(R.id.check);
-        check.setVisibility(View.INVISIBLE);
+        check.setVisibility(View.GONE);
+        Button delete = (Button) view.findViewById(R.id.delete);
+        delete.setTag(R.string.story, story);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

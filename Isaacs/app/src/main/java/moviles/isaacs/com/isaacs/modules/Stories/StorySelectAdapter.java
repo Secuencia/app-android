@@ -2,6 +2,7 @@ package moviles.isaacs.com.isaacs.modules.Stories;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -61,6 +64,8 @@ public class StorySelectAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Story story = mDataSource.get(position);
         View view = mInflater.inflate(R.layout.cell_select, parent, false);
+        Button delete = (Button) view.findViewById(R.id.delete);
+        delete.setVisibility(View.GONE);
         TextView title = (TextView) view.findViewById(R.id.title);
         title.setText(story.getTitle());
         CheckBox check = (CheckBox) view.findViewById(R.id.check);
