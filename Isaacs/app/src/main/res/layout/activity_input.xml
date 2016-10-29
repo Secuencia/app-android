@@ -5,7 +5,7 @@
     android:id="@+id/activity_input"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="moviles.isaacs.com.isaacs.Modules.Input.InputActivity"
+    tools:context="moviles.isaacs.com.isaacs.modules.Input.InputActivity"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"

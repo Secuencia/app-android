@@ -8,15 +8,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Modules.MainActivity"></activity>
-        <activity android:name=".Modules.Contents.ContentsActivity" />
-        <activity android:name=".Modules.Stories.StoriesActivity" />
+        <activity android:name=".modules.MainActivity"></activity>
+        <activity android:name=".modules.Contents.ContentsActivity" />
+        <activity android:name=".modules.Stories.StoriesActivity" />
         <activity
-            android:name=".Modules.Input.InputActivity"
+            android:name=".modules.Input.InputActivity"
             android:label="@string/title_activity_input"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".Modules.Home.HomeActivity">
+        <activity android:name=".modules.Home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

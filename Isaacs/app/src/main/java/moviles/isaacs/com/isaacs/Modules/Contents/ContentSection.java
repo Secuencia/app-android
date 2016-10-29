@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs.Modules.Contents;
+package moviles.isaacs.com.isaacs.modules.Contents;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -69,6 +69,8 @@ class ContentSection extends StatelessSection {
             Content content = contents.get(position);
             JSONObject contentData = new JSONObject(content.getData());
             View view = ((ViewWrapper)holder).getView();
+            Button delete = (Button)view.findViewById(R.id.delete);
+            delete.setTag(R.string.content, content);
             if(type == Content.TEXT) {
                 TextView bodyEditText = (TextView) view.findViewById(R.id.body_textView);
                 String contentBody = contentData.getString("body");

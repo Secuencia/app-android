@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Isaacs</string>
     <string name="title_activity_input">InputActivity</string>
+    <string name="content">Content</string>
 </resources>

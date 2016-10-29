@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs.Modules.Contents;
+package moviles.isaacs.com.isaacs.modules.Contents;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,16 +57,21 @@ public class ContentsActivity extends AppCompatActivity {
         final ArrayList<Content> imageList = handler.getContentsByType(Content.PICTURE);
         final ArrayList<Content> audioList = handler.getContentsByType(Content.AUDIO);
         sectionAdapter = new SectionedRecyclerViewAdapter();
-        sectionAdapter.addSection(new ContentSection(this, Content.TEXT ,R.layout.cell_display_text, textList));
-        sectionAdapter.addSection(new ContentSection(this, Content.PICTURE ,R.layout.cell_display_photo, imageList));
-        sectionAdapter.addSection(new ContentSection(this, Content.AUDIO ,R.layout.cell_display_audio, audioList));
+        if(textList.size() > 0) {
+            sectionAdapter.addSection(new ContentSection(this, Content.TEXT, R.layout.cell_display_text, textList));
+        }
+        if(imageList.size()>0){
+            sectionAdapter.addSection(new ContentSection(this, Content.PICTURE ,R.layout.cell_display_photo, imageList));
+        }
+        if(audioList.size() > 0){
+            sectionAdapter.addSection(new ContentSection(this, Content.AUDIO ,R.layout.cell_display_audio, audioList));
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(sectionAdapter);
     }
 
     public void switchDisplayMode(View view){
         Button btn = (Button)view.findViewById(R.id.content_display);
-        showAll = !showAll;
         if(showAll){
             btn.setText("Mostrar Todos");
             sortByType();
@@ -74,6 +79,19 @@ public class ContentsActivity extends AppCompatActivity {
         else{
             btn.setText("Filtrar por tipo");
             setAllContents();
+        }
+        showAll = !showAll;
+    }
+
+    public void deleteContent(View view){
+        Button button = (Button)view.findViewById(R.id.delete);
+        Content content = (Content)button.getTag(R.string.content);
+        handler.deleteContentById(content);
+        if(showAll){
+            setAllContents();
+        }
+        else{
+            sortByType();
         }
     }
 }
