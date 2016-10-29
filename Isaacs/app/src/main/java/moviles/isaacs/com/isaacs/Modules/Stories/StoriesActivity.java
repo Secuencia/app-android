@@ -33,6 +33,10 @@ public class StoriesActivity extends AppCompatActivity {
 
     private MyDBHandler handler;
 
+    private StoryDetailAdapter adapter;
+
+    private ArrayList<Story> stories;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,10 @@ public class StoriesActivity extends AppCompatActivity {
 
         listStories = (ListView)findViewById(R.id.listStories);
 
-        refreshStories();
+        stories = handler.getStories();
+        adapter = new StoryDetailAdapter(this, stories);
+
+        listStories.setAdapter(adapter);
 
         FloatingActionButton addStoryButton = (FloatingActionButton) findViewById(R.id.floatingActionButtonAddStory);
         addStoryButton.setOnClickListener(new View.OnClickListener() {
@@ -95,13 +102,8 @@ public class StoriesActivity extends AppCompatActivity {
         story.setTitle(newStoryTitle); newStoryTitle = "";
         story.setBrief(newStoryBrief != "" ? newStoryBrief : "No brief"); newStoryTitle = "";
         handler.createStory(story);
-        refreshStories();
-    }
-
-    private void refreshStories(){
-        ArrayList stories = handler.getStories();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stories);
-        listStories.setAdapter(adapter);
+        stories.add(story);
+        adapter.notifyDataSetChanged();
     }
 
 

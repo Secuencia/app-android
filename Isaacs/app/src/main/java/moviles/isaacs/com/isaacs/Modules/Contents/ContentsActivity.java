@@ -88,10 +88,10 @@ public class ContentsActivity extends AppCompatActivity {
         Content content = (Content)button.getTag(R.string.content);
         handler.deleteContentById(content);
         if(showAll){
-            setAllContents();
+            sortByType();
         }
         else{
-            sortByType();
+            setAllContents();
         }
     }
 }

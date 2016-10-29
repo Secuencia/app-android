@@ -77,6 +77,9 @@ public class Story implements Serializable{
     }
 
     public ArrayList<Content> getContents() {
+        if(contents == null){
+            return new ArrayList<>();
+        }
         return contents;
     }
 
@@ -85,9 +88,11 @@ public class Story implements Serializable{
     }
 
     public boolean hasContent(Content content){
-        for (Content c : contents){
-            if(c.get_id() == content.get_id()){
-                return true;
+        if(contents != null){
+            for (Content c : contents){
+                if(c.get_id() == content.get_id()){
+                    return true;
+                }
             }
         }
         return false;
