@@ -2,6 +2,7 @@ package moviles.isaacs.com.isaacs.models;
 
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
  * Created by Nicolas on 9/27/16.
  */
 
-public class Story{
+public class Story implements Serializable{
 
     private int _id;
 
@@ -28,6 +29,7 @@ public class Story{
     public Story(){
         datecreated = Calendar.getInstance().getTime(); //Have to obtain current date
         lastupdated = Calendar.getInstance().getTime();
+        this.contents = new ArrayList<>();
     }
 
     public Story(String brief, String title){
@@ -80,6 +82,15 @@ public class Story{
 
     public void setContents(ArrayList<Content> contents) {
         this.contents = contents;
+    }
+
+    public boolean hasContent(Content content){
+        for (Content c : contents){
+            if(c.get_id() == content.get_id()){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

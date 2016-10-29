@@ -1,6 +1,7 @@
 package moviles.isaacs.com.isaacs.modules.Contents;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 import moviles.isaacs.com.isaacs.R;
 import moviles.isaacs.com.isaacs.models.Content;
+import moviles.isaacs.com.isaacs.modules.Stories.StorySelectActivity;
 import moviles.isaacs.com.isaacs.services.AudioManager;
 
 /**
@@ -66,9 +68,17 @@ class ContentSection extends StatelessSection {
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         try{
-            Content content = contents.get(position);
+            final Content content = contents.get(position);
             JSONObject contentData = new JSONObject(content.getData());
             View view = ((ViewWrapper)holder).getView();
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent goToSelectStoryActivity = new Intent(mContext, StorySelectActivity.class);
+                    goToSelectStoryActivity.putExtra("content", content);
+                    mContext.startActivity(goToSelectStoryActivity);
+                }
+            });
             Button delete = (Button)view.findViewById(R.id.delete);
             delete.setTag(R.string.content, content);
             if(type == Content.TEXT) {

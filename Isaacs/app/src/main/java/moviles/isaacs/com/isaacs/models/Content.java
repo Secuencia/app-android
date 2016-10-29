@@ -2,6 +2,7 @@ package moviles.isaacs.com.isaacs.models;
 
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
  * Created by Nicolas on 9/27/16.
  */
 
-public class Content {
+public class Content implements Serializable {
 
     // Constants
 

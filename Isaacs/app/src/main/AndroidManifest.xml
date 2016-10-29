@@ -11,6 +11,7 @@
         <activity android:name=".modules.MainActivity"></activity>
         <activity android:name=".modules.Contents.ContentsActivity" />
         <activity android:name=".modules.Stories.StoriesActivity" />
+        <activity android:name=".modules.Stories.StorySelectActivity" />
         <activity
             android:name=".modules.Input.InputActivity"
             android:label="@string/title_activity_input"

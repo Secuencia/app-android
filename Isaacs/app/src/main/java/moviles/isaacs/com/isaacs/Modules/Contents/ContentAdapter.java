@@ -1,6 +1,7 @@
 package moviles.isaacs.com.isaacs.modules.Contents;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 import moviles.isaacs.com.isaacs.R;
 import moviles.isaacs.com.isaacs.models.Content;
+import moviles.isaacs.com.isaacs.modules.Stories.StorySelectActivity;
 import moviles.isaacs.com.isaacs.services.AudioManager;
 
 /**
@@ -67,9 +69,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ViewWrapper> {
     @Override
     public void onBindViewHolder(ViewWrapper holder, int position) {
         try{
-            Content content = (Content) getItem(position);
+            final Content content = (Content) getItem(position);
             JSONObject contentData = new JSONObject(content.getData());
             View view = holder.getView();
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent goToSelectStoryActivity = new Intent(mContext, StorySelectActivity.class);
+                    goToSelectStoryActivity.putExtra("content", content);
+                    mContext.startActivity(goToSelectStoryActivity);
+                }
+            });
             Button delete = (Button)view.findViewById(R.id.delete);
             delete.setTag(R.string.content, content);
             if(content.getType() == Content.TEXT) {
