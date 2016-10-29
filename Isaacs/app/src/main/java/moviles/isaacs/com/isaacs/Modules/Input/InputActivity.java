@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs;
+package moviles.isaacs.com.isaacs.Modules.Input;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import moviles.isaacs.com.isaacs.Adapters.ContentInputAdapter;
+import moviles.isaacs.com.isaacs.R;
 import moviles.isaacs.com.isaacs.models.Content;
 import moviles.isaacs.com.isaacs.services.AudioManager;
 import moviles.isaacs.com.isaacs.services.MyDBHandler;

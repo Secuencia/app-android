@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs.Adapters;
+package moviles.isaacs.com.isaacs.Modules.Contents;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

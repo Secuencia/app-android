@@ -129,6 +129,35 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     // R: Retrieve
 
+    public ArrayList<Content> getContentsByType(int type){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_CONTENTS + " WHERE " + COLUMN_C_TYPE + " = \"" + type + "\"";;
+
+        Cursor c = db.rawQuery(query, null);
+
+        ArrayList<Content> contents = new ArrayList<>();
+
+        if (c.getCount() > 0){
+            c.moveToFirst();
+            do {
+                Content content = new Content();
+                content.set_id(c.getInt(c.getColumnIndex(COLUMN_C_ID)));
+                content.setType(c.getInt(c.getColumnIndex(COLUMN_C_TYPE)));
+                content.setDateCreated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_C_DATECREATED))));
+                content.setLastUpdated(convertLongToDate(c.getLong(c.getColumnIndex(COLUMN_C_LASTUPDATED))));
+                content.setData(c.getString(c.getColumnIndex(COLUMN_C_DATA))); // Here is necessary to parse JSON first
+                content.setLat(c.getDouble(c.getColumnIndex(COLUMN_C_LAT)));
+                content.setLon(c.getDouble(c.getColumnIndex(COLUMN_C_LON)));
+                content.setStories(null); // Retrieve content's stories
+                contents.add(content);
+            } while(c.moveToNext());
+        }
+
+        db.close();
+
+        return contents;
+    }
+
     public Content getContent(int idContent) {
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_CONTENTS + " WHERE " + COLUMN_C_ID + " = \"" + idContent + "\""; // Improve with query method

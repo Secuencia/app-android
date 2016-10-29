@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs.Adapters;
+package moviles.isaacs.com.isaacs.Modules.Input;
 
 import android.content.Context;
 import android.util.Log;

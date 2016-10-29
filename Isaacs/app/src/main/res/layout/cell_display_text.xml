@@ -15,4 +15,14 @@
         android:id="@+id/body_textView"
         android:layout_weight="1"
         android:gravity="top|left" />
+
+    <Button
+        android:text="X"
+        android:layout_width="30dp"
+        android:id="@+id/delete"
+        android:layout_weight="1"
+        android:layout_marginLeft="-30dp"
+        android:background="@drawable/circle_delete"
+        android:layout_height="30dp"
+        android:textColor="@color/white" />
 </LinearLayout>

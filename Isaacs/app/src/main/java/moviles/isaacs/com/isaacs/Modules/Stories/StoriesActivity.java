@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs;
+package moviles.isaacs.com.isaacs.Modules.Stories;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import moviles.isaacs.com.isaacs.R;
 import moviles.isaacs.com.isaacs.models.Story;
 import moviles.isaacs.com.isaacs.services.MyDBHandler;
 

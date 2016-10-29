@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs;
+package moviles.isaacs.com.isaacs.Modules;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import moviles.isaacs.com.isaacs.R;
 import moviles.isaacs.com.isaacs.models.Content;
 import moviles.isaacs.com.isaacs.models.Story;
 import moviles.isaacs.com.isaacs.services.MyDBHandler;

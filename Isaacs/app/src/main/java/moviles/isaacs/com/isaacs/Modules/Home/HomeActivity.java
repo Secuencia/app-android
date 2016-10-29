@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs;
+package moviles.isaacs.com.isaacs.Modules.Home;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import moviles.isaacs.com.isaacs.Modules.Contents.ContentsActivity;
+import moviles.isaacs.com.isaacs.Modules.Input.InputActivity;
+import moviles.isaacs.com.isaacs.Modules.MainActivity;
+import moviles.isaacs.com.isaacs.Modules.Stories.StoriesActivity;
+import moviles.isaacs.com.isaacs.R;
 
 public class HomeActivity extends AppCompatActivity {
 

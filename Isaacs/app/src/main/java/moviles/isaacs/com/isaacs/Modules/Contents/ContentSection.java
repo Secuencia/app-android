@@ -1,86 +1,84 @@
-package moviles.isaacs.com.isaacs.Adapters;
+package moviles.isaacs.com.isaacs.Modules.Contents;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
+import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 import moviles.isaacs.com.isaacs.R;
 import moviles.isaacs.com.isaacs.models.Content;
 import moviles.isaacs.com.isaacs.services.AudioManager;
 
 /**
- * Created by sfrsebastian on 10/21/16.
+ * Created by sfrsebastian on 10/28/16.
  */
 
-public class ContentAdapter extends RecyclerView.Adapter<ViewWrapper> {
+class ContentSection extends StatelessSection {
+
+    private ArrayList<Content> contents;
+    private int type;
     private Context mContext;
-    private LayoutInflater mInflater;
-    private ArrayList<Content> mDataSource;
-
-    public ContentAdapter(Context context, ArrayList<Content> items) {
-        mContext = context;
-        mDataSource = items;
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-    //1
-    @Override
-    public int getItemCount() {
-        return mDataSource.size();
-    }
-
-    public Object getItem(int position){
-        return mDataSource.get(position);
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return mDataSource.get(position).getType();
-    }
-
-    @Override
-    public ViewWrapper onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewWrapper wrapper;
-        if(viewType == Content.TEXT){
-            wrapper = new ViewWrapper(mInflater.inflate(R.layout.cell_display_text, parent, false));
+    private String title;
+    public ContentSection(Context context, int type, int resource_id, ArrayList<Content> contents) {
+        super(R.layout.section_header, resource_id);
+        this.contents = contents;
+        this.type = type;
+        this.mContext = context;
+        switch(type){
+            case (Content.AUDIO):
+                title = "Grabaciones";
+                break;
+            case (Content.TEXT):
+                title = "Texto";
+                break;
+            case (Content.PICTURE):
+                title = "Imágenes";
+                break;
         }
-        else if(viewType == Content.PICTURE){
-            wrapper = new ViewWrapper(mInflater.inflate(R.layout.cell_display_photo, parent, false));
-        }
-        else{
-            wrapper = new ViewWrapper(mInflater.inflate(R.layout.cell_display_audio, parent, false));
-        }
-        return wrapper;
     }
 
     @Override
-    public void onBindViewHolder(ViewWrapper holder, int position) {
+    public int getContentItemsTotal() {
+        return contents.size();
+    }
+
+    @Override
+    public RecyclerView.ViewHolder getItemViewHolder(View view) {
+        return new ViewWrapper(view);
+    }
+
+    @Override
+    public RecyclerView.ViewHolder getHeaderViewHolder(View view) {
+        TextView textView = (TextView)view.findViewById(R.id.tvTitle);
+        textView.setText(title);
+        return new ViewWrapper(view);
+    }
+
+    @Override
+    public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         try{
-            Content content = (Content) getItem(position);
+            Content content = contents.get(position);
             JSONObject contentData = new JSONObject(content.getData());
-            View view = holder.getView();
-            if(content.getType() == Content.TEXT) {
+            View view = ((ViewWrapper)holder).getView();
+            if(type == Content.TEXT) {
                 TextView bodyEditText = (TextView) view.findViewById(R.id.body_textView);
                 String contentBody = contentData.getString("body");
                 bodyEditText.setText(contentBody);
             }
-            else if(content.getType() == Content.PICTURE){
+            else if(type == Content.PICTURE){
                 ImageView imageView = (ImageView) view.findViewById(R.id.content_thumbnail);
                 Picasso.with(mContext).load(contentData.getString("picture")).resize(130,130).placeholder(R.mipmap.ic_launcher).into(imageView);
             }
-            else if(content.getType() == Content.AUDIO){
+            else if(type == Content.AUDIO){
                 final String audioPath = contentData.getString("audio");
                 Button btnPlay = (Button) view.findViewById(R.id.play_button);
                 btnPlay.setOnClickListener(new View.OnClickListener() {

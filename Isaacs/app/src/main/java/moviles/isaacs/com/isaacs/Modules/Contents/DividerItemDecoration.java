@@ -1,4 +1,4 @@
-package moviles.isaacs.com.isaacs.Adapters;
+package moviles.isaacs.com.isaacs.Modules.Contents;
 
 import android.content.Context;
 import android.content.res.TypedArray;
