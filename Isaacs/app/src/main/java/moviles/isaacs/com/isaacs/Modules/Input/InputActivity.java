@@ -1,10 +1,14 @@
 package moviles.isaacs.com.isaacs.modules.Input;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,6 +18,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -22,15 +30,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import moviles.isaacs.com.isaacs.Manifest;
 import moviles.isaacs.com.isaacs.R;
 import moviles.isaacs.com.isaacs.models.Content;
 import moviles.isaacs.com.isaacs.services.AudioManager;
 import moviles.isaacs.com.isaacs.services.MyDBHandler;
 
-public class InputActivity extends AppCompatActivity {
+public class InputActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE_REQUEST = 2 ;
+    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
     private String inputType;
     private ListView listView;
     private ArrayList<Content> listItems;
@@ -38,6 +48,8 @@ public class InputActivity extends AppCompatActivity {
     private Content currentContent;
     private File pictureFile;
     private MyDBHandler handler;
+    private GoogleApiClient mGoogleApiClient;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +76,50 @@ public class InputActivity extends AppCompatActivity {
             case("audio"): insertAudio(null);break;
             default: break;
         }
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
+        FloatingActionButton photoButton = (FloatingActionButton) findViewById(R.id.photo_insert);
+        FloatingActionButton audioButton = (FloatingActionButton) findViewById(R.id.audio_insert);
+        if(ContextCompat.checkSelfPermission( this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            photoButton.setEnabled(false);
+            audioButton.setEnabled(false);
+        }
+        if(ContextCompat.checkSelfPermission( this, android.Manifest.permission.RECORD_AUDIO ) != PackageManager.PERMISSION_GRANTED){
+            audioButton.setEnabled(false);
+        }
+
     }
+
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
+        }
+        location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.e("Excepcion", "Suspended location service");
+    }
+
 
     @Override
     public void onDestroy(){
@@ -145,6 +200,10 @@ public class InputActivity extends AppCompatActivity {
                     JSONObject json = new JSONObject(currentContent.getData());
                     json.put("body", body.getText());
                     currentContent.setData(json.toString());
+                    if(location != null){
+                        currentContent.setLat(location.getLatitude());
+                        currentContent.setLon(location.getLongitude());
+                    }
                     listItems.set(adapter.getCount()-1, currentContent);
                     adapter.notifyDataSetChanged();
                 }
