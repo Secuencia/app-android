@@ -45,7 +45,6 @@ public class StoryDetailActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.addItemDecoration(new DividerItemDecoration(20, 1));
         setAllContents();
-
     }
 
     private void setAllContents(){
