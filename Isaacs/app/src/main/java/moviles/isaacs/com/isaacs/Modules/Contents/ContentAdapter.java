@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -93,7 +94,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ViewWrapper> {
             }
             else if(content.getType() == Content.AUDIO){
                 final String audioPath = contentData.getString("audio");
-                Button btnPlay = (Button) view.findViewById(R.id.play_button);
+                ImageButton btnPlay = (ImageButton) view.findViewById(R.id.play_button);
                 btnPlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

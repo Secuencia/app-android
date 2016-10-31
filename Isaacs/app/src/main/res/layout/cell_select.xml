@@ -21,7 +21,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/delete"
-        android:layout_weight="10"
         android:background="@android:color/holo_red_dark"
         android:textColor="@android:color/white"
         android:onClick="deleteStory"/>
@@ -30,6 +29,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/check"
-        android:layout_weight="10"
         android:onClick="checkStory"/>
 </LinearLayout>

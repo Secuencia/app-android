@@ -49,39 +49,45 @@
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/colorPrimary"
                 fab:fab_title="Texto"
-                fab:fab_colorPressed="@color/colorPrimaryDark"
                 fab:fab_size="mini"
-                android:onClick="insertText"/>
+                android:onClick="insertText"
+                android:padding="5dp"
+                android:scaleType="centerInside"
+                android:cropToPadding="true"
+                fab:fab_icon="@mipmap/text_icon" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/gallery_insert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_colorNormal="#fa00ff"
                 fab:fab_title="Galeria"
-                fab:fab_colorPressed="@color/colorPrimaryDark"
                 fab:fab_size="mini"
-                android:onClick="insertFromGallery"/>
+                android:onClick="insertFromGallery"
+                fab:fab_icon="@mipmap/gallery_icon"
+                android:padding="5dp" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/photo_insert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_colorNormal="#21ffff"
                 fab:fab_title="Foto"
-                fab:fab_colorPressed="@color/colorPrimaryDark"
                 fab:fab_size="mini"
-                android:onClick="insertPhoto"/>
+                android:onClick="insertPhoto"
+                android:padding="5dp"
+                fab:fab_icon="@mipmap/camera" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/audio_insert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_colorNormal="#fd6b07"
                 fab:fab_title="Audio"
-                fab:fab_colorPressed="@color/colorPrimaryDark"
                 fab:fab_size="mini"
-                android:onClick="insertAudio"/>
+                android:onClick="insertAudio"
+                android:padding="5dp"
+                fab:fab_icon="@mipmap/record" />
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
     </LinearLayout>

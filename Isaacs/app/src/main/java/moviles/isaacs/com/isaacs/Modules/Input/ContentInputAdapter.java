@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -82,7 +83,8 @@ public class ContentInputAdapter extends BaseAdapter {
             }
             else if(content.getType() == Content.AUDIO){
                 rowView = mInflater.inflate(R.layout.cell_input_audio, parent, false);
-                final Button btnRecord = (Button)rowView.findViewById(R.id.record_button);
+                final ImageButton btnRecord = (ImageButton)rowView.findViewById(R.id.record_button);
+                final ImageButton btnPlay = (ImageButton)rowView.findViewById(R.id.play_button);
                 final String audioPath = contentData.getString("audio");
                 btnRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -90,15 +92,16 @@ public class ContentInputAdapter extends BaseAdapter {
                         Log.i("Test", "Record Now");
                         if(!AudioManager.getInstance().isRecording()){
                             AudioManager.getInstance().startRecording(audioPath);
-                            btnRecord.setText("Recording");
+                            btnRecord.setImageResource(R.mipmap.stop);
+                            btnPlay.setEnabled(false);
                         }
                         else{
                             AudioManager.getInstance().stopRecording();
-                            btnRecord.setText("Record");
+                            btnRecord.setImageResource(R.mipmap.record);
+                            btnPlay.setEnabled(true);
                         }
                     }
                 });
-                Button btnPlay = (Button) rowView.findViewById(R.id.play_button);
                 btnPlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

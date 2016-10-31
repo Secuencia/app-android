@@ -101,7 +101,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_C_DATECREATED, convertDateToLong(content.getDateCreated()));
         values.put(COLUMN_C_LASTUPDATED, convertDateToLong(content.getLastUpdated()));
         values.put(COLUMN_C_LAT, content.getLat());
-        values.put(COLUMN_C_LAT, content.getLon());
+        values.put(COLUMN_C_LON, content.getLon());
 
         SQLiteDatabase db = getWritableDatabase();
         long result = db.insert(TABLE_CONTENTS, null, values);

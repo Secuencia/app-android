@@ -35,11 +35,10 @@ import moviles.isaacs.com.isaacs.models.Content;
 import moviles.isaacs.com.isaacs.services.AudioManager;
 import moviles.isaacs.com.isaacs.services.MyDBHandler;
 
-public class InputActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks {
+public class InputActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE_REQUEST = 2 ;
-    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
     private String inputType;
     private ListView listView;
     private ArrayList<Content> listItems;
@@ -47,7 +46,6 @@ public class InputActivity extends AppCompatActivity implements GoogleApiClient.
     private Content currentContent;
     private File pictureFile;
     private MyDBHandler handler;
-    private GoogleApiClient mGoogleApiClient;
     private Location location;
 
     @Override
@@ -62,6 +60,7 @@ public class InputActivity extends AppCompatActivity implements GoogleApiClient.
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             inputType = extras.getString("INPUT_TYPE");
+            location =  (Location)extras.get("location");
         }
         listView = (ListView) findViewById(R.id.list_view);
         listView.setItemsCanFocus(true);
@@ -73,13 +72,8 @@ public class InputActivity extends AppCompatActivity implements GoogleApiClient.
             case("text"): insertText(null); break;
             case("photo"): insertPhoto(null);break;
             case("audio"): insertAudio(null);break;
+            case("gallery"): insertFromGallery(null);break;
             default: break;
-        }
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addApi(LocationServices.API)
-                    .build();
         }
 
         FloatingActionButton photoButton = (FloatingActionButton) findViewById(R.id.photo_insert);
@@ -93,32 +87,6 @@ public class InputActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
     }
-
-    protected void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
-
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
-        }
-        location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.e("Excepcion", "Suspended location service");
-    }
-
 
     @Override
     public void onDestroy(){
@@ -199,12 +167,12 @@ public class InputActivity extends AppCompatActivity implements GoogleApiClient.
                     JSONObject json = new JSONObject(currentContent.getData());
                     json.put("body", body.getText());
                     currentContent.setData(json.toString());
-                    if(location != null){
-                        currentContent.setLat(location.getLatitude());
-                        currentContent.setLon(location.getLongitude());
-                    }
                     listItems.set(adapter.getCount()-1, currentContent);
                     adapter.notifyDataSetChanged();
+                }
+                if(location != null){
+                    currentContent.setLat(location.getLatitude());
+                    currentContent.setLon(location.getLongitude());
                 }
                 handler.createContent(currentContent);
             }

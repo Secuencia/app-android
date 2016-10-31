@@ -7,12 +7,13 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
-    <Button
+    <ImageButton
         android:text="Play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/play_button"
-        android:layout_weight="10" />
+        android:src="@mipmap/play_icon"
+        android:background="@android:color/transparent" />
 
     <TextView
         android:text="TextView"

@@ -7,24 +7,27 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
-    <Button
+    <ImageButton
         android:text="Record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:src="@mipmap/record"
         android:id="@+id/record_button"
-        android:layout_weight="10" />
+        android:background="@android:color/transparent"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 
-    <Button
+    <ImageButton
         android:text="Play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/play_button"
-        android:layout_weight="10" />
+        android:src="@mipmap/play_icon"
+        android:background="@android:color/transparent"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 
     <TextView
         android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="80"
-        android:id="@+id/date_text" />
+        android:id="@+id/date_text"
+        android:gravity="left|center_vertical" />
 </LinearLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="moviles.isaacs.com.isaacs.modules.Radar.MapRadarFragment">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:weightSum="100"
+        android:visibility="gone">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:id="@+id/radius_input"
+            android:layout_weight="20"
+            android:inputType="number|numberDecimal"
+            android:textSize="15sp"
+            android:hint="Ingresa el valor de radio de búsqueda en KM" />
+
+        <Button
+            android:layout_height="60dp"
+            android:id="@+id/submit_radius"
+            android:layout_weight="80"
+            android:background="@android:drawable/ic_menu_add"
+            android:layout_width="300dp"
+            android:onClick="refreshMap"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/info_radar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Debes habilitar tu ubicacion para utilizar el radar"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -8,11 +8,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity android:name=".modules.MainActivity"></activity>
         <activity android:name=".modules.Contents.ContentsActivity" />
         <activity android:name=".modules.Stories.StoriesActivity" />
         <activity android:name=".modules.Stories.StorySelectActivity" />
         <activity android:name=".modules.Stories.StoryDetailActivity" />
+        <activity android:name=".modules.Radar.RadarActivity" />
         <activity
             android:name=".modules.Input.InputActivity"
             android:label="@string/title_activity_input"
@@ -41,6 +47,7 @@
         android:required="true" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>

@@ -21,6 +21,10 @@ public class Content implements Serializable {
 
     public static final int AUDIO = 2;
 
+    public static final int WEATHER = 3;
+
+    public static final int PLACE = 4;
+
     // Variables
 
     private int _id;
